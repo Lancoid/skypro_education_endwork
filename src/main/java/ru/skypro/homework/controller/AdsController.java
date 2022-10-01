@@ -123,7 +123,7 @@ public class AdsController {
     @ApiOperation(
             value = "getAdsMe",
             nickname = "getAdsMeUsingGET",
-            notes = ""
+            notes = "Получение всех своих объявлений"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))),
