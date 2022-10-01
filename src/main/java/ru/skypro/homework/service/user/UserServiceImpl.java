@@ -1,10 +1,10 @@
 package ru.skypro.homework.service.user;
 
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.CreateUser;
-import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.ResponseWrapperUser;
-import ru.skypro.homework.dto.User;
+import ru.skypro.homework.dto.CreateUserDto;
+import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.ResponseWrapperUserDto;
+import ru.skypro.homework.dto.UserDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,56 +13,56 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Override
-    public CreateUser create(CreateUser user) {
-        user.setFirstName("firstName");
-        user.setLastName("lastName");
-        user.setPassword("password");
-        user.setPhone("phone");
-        user.setEmail("email");
+    public CreateUserDto create(CreateUserDto createUserDto) {
+        createUserDto.setFirstName("firstName");
+        createUserDto.setLastName("lastName");
+        createUserDto.setPassword("password");
+        createUserDto.setPhone("phone");
+        createUserDto.setEmail("email");
 
-        return user;
+        return createUserDto;
     }
 
     @Override
-    public User update(User user) {
+    public UserDto update(UserDto userDto) {
         return getUser();
     }
 
     @Override
-    public NewPassword newPassword(NewPassword newPassword) {
-        newPassword.setNewPassword("newPassword");
-        newPassword.setCurrentPassword("currentPassword");
+    public NewPasswordDto newPassword(NewPasswordDto newPasswordDto) {
+        newPasswordDto.setNewPassword("newPassword");
+        newPasswordDto.setCurrentPassword("currentPassword");
 
-        return newPassword;
+        return newPasswordDto;
     }
 
     @Override
-    public User getOneUser(Integer id) {
+    public UserDto getOneUser(Integer id) {
         return getUser();
     }
 
     @Override
-    public ResponseWrapperUser getAllUsers() {
-        List<User> list = new ArrayList<>();
+    public ResponseWrapperUserDto getAllUsers() {
+        List<UserDto> list = new ArrayList<>();
         list.add(getUser());
 
-        ResponseWrapperUser responseWrapperUser = new ResponseWrapperUser();
-        responseWrapperUser.setCount(list.size());
-        responseWrapperUser.setResults(list);
+        ResponseWrapperUserDto responseWrapperUserDto = new ResponseWrapperUserDto();
+        responseWrapperUserDto.setCount(list.size());
+        responseWrapperUserDto.setResults(list);
 
-        return responseWrapperUser;
+        return responseWrapperUserDto;
     }
 
-    private User getUser() {
-        User user = new User();
+    private UserDto getUser() {
+        UserDto userDto = new UserDto();
 
-        user.setId(6);
-        user.setFirstName("firstName");
-        user.setLastName("lastName");
-        user.setPhone("phone");
-        user.setEmail("email");
+        userDto.setId(6);
+        userDto.setFirstName("firstName");
+        userDto.setLastName("lastName");
+        userDto.setPhone("phone");
+        userDto.setEmail("email");
 
-        return user;
+        return userDto;
     }
 
 }

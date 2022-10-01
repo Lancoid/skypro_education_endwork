@@ -1,10 +1,10 @@
 package ru.skypro.homework.service.ads;
 
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.Ads;
-import ru.skypro.homework.dto.CreateAds;
-import ru.skypro.homework.dto.FullAds;
-import ru.skypro.homework.dto.ResponseWrapperAds;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateAdsDto;
+import ru.skypro.homework.dto.FullAdsDto;
+import ru.skypro.homework.dto.ResponseWrapperAdsDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,12 @@ import java.util.List;
 public class AdsServiceImpl implements AdsService {
 
     @Override
-    public Ads create(CreateAds createAds) {
+    public AdsDto create(CreateAdsDto createAdsDto) {
         return getAds();
     }
 
     @Override
-    public Ads update(Integer id, Ads createAds) {
+    public AdsDto update(Integer id, AdsDto adsDto) {
         return getAds();
     }
 
@@ -28,57 +28,57 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public FullAds getOne(Integer id) {
-        FullAds fullAds = new FullAds();
+    public FullAdsDto getOne(Integer id) {
+        FullAdsDto fullAdsDto = new FullAdsDto();
 
-        fullAds.setPk(0);
+        fullAdsDto.setPk(0);
 
-        fullAds.setAuthorLastName("authorLastName");
-        fullAds.setAuthorFirstName("authorFirstName");
-        fullAds.setEmail("email");
-        fullAds.setPhone("phone");
-        fullAds.setTitle("title");
-        fullAds.setImage("image");
-        fullAds.setDescription("description");
-        fullAds.setPrice(5);
+        fullAdsDto.setAuthorLastName("authorLastName");
+        fullAdsDto.setAuthorFirstName("authorFirstName");
+        fullAdsDto.setEmail("email");
+        fullAdsDto.setPhone("phone");
+        fullAdsDto.setTitle("title");
+        fullAdsDto.setImage("image");
+        fullAdsDto.setDescription("description");
+        fullAdsDto.setPrice(5);
 
-        return fullAds;
+        return fullAdsDto;
     }
 
     @Override
-    public ResponseWrapperAds getAll() {
-        List<Ads> list = new ArrayList<>();
+    public ResponseWrapperAdsDto getAll() {
+        List<AdsDto> list = new ArrayList<>();
         list.add(getAds());
 
-        ResponseWrapperAds responseWrapperAds = new ResponseWrapperAds();
-        responseWrapperAds.setCount(list.size());
-        responseWrapperAds.setResults(list);
+        ResponseWrapperAdsDto responseWrapperAdsDto = new ResponseWrapperAdsDto();
+        responseWrapperAdsDto.setCount(list.size());
+        responseWrapperAdsDto.setResults(list);
 
-        return responseWrapperAds;
+        return responseWrapperAdsDto;
     }
 
     @Override
-    public ResponseWrapperAds getAllMine() {
-        List<Ads> list = new ArrayList<>();
+    public ResponseWrapperAdsDto getAllMine() {
+        List<AdsDto> list = new ArrayList<>();
         list.add(getAds());
 
-        ResponseWrapperAds responseWrapperAds = new ResponseWrapperAds();
-        responseWrapperAds.setCount(list.size());
-        responseWrapperAds.setResults(list);
+        ResponseWrapperAdsDto responseWrapperAdsDto = new ResponseWrapperAdsDto();
+        responseWrapperAdsDto.setCount(list.size());
+        responseWrapperAdsDto.setResults(list);
 
-        return responseWrapperAds;
+        return responseWrapperAdsDto;
     }
 
-    private Ads getAds() {
-        Ads ads = new Ads();
+    private AdsDto getAds() {
+        AdsDto adsDto = new AdsDto();
 
-        ads.setPk(1);
-        ads.setTitle("title");
-        ads.setImage("image");
-        ads.setAuthor(6);
-        ads.setPrice(5);
+        adsDto.setPk(1);
+        adsDto.setTitle("title");
+        adsDto.setImage("image");
+        adsDto.setAuthor(6);
+        adsDto.setPrice(5);
 
-        return ads;
+        return adsDto;
     }
 
 }

@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ResponseWrapperUser {
+public class ResponseWrapperAdsDto {
 
     private Integer count;
-    private List<User> results = null;
+    private List<AdsDto> results = null;
 
 }

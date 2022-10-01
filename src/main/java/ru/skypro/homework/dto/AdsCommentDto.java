@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.OffsetDateTime;
 
 @Data
-public class AdsComment {
+public class AdsCommentDto {
 
     private Integer pk;
     private OffsetDateTime createdAt;
