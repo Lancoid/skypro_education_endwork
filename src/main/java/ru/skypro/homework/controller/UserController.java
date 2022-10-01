@@ -36,7 +36,9 @@ public class UserController {
             notes = "Создание пользователя"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUser.class))),
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CreateUser.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -54,7 +56,9 @@ public class UserController {
             notes = "Редактирование пользователя"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "200", description = "Updated",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
@@ -72,7 +76,9 @@ public class UserController {
             notes = "Изменение пароля пользователя"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NewPassword.class))),
+            @ApiResponse(responseCode = "200", description = "Updated",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = NewPassword.class))),
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
@@ -91,7 +97,9 @@ public class UserController {
             notes = "Получение одного пользователя"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -109,7 +117,9 @@ public class UserController {
             notes = "Получение всех пользователей"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperUser.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseWrapperUser.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")

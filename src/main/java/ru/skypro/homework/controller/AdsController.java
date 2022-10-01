@@ -35,7 +35,9 @@ public class AdsController {
             notes = "Добавление объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Ads.class))),
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Ads.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -53,7 +55,9 @@ public class AdsController {
             notes = "Редактирование объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Ads.class))),
+            @ApiResponse(responseCode = "200", description = "Updated",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Ads.class))),
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
@@ -92,7 +96,9 @@ public class AdsController {
             notes = "Получение одного объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FullAds.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = FullAds.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -110,7 +116,9 @@ public class AdsController {
             notes = "Получение всех объявлений"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseWrapperAds.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -126,7 +134,9 @@ public class AdsController {
             notes = "Получение всех своих объявлений"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseWrapperAds.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -148,7 +158,9 @@ public class AdsController {
             notes = "Добавление комментария объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AdsComment.class))),
+            @ApiResponse(responseCode = "201", description = "Created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AdsComment.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -167,7 +179,9 @@ public class AdsController {
             notes = "Редактирование комментария объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AdsComment.class))),
+            @ApiResponse(responseCode = "200", description = "Updated",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AdsComment.class))),
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
@@ -208,7 +222,9 @@ public class AdsController {
             notes = "Получение одного комментария объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AdsComment.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AdsComment.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
@@ -227,7 +243,9 @@ public class AdsController {
             notes = "Получение всех комментариев объявления"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAdsComment.class))),
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseWrapperAdsComment.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
