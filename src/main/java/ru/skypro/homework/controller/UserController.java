@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CreateUserDto;
-import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.ResponseWrapperUserDto;
+import ru.skypro.homework.dto.UserCreateDto;
 import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.dto.UserNewPasswordDto;
 import ru.skypro.homework.service.user.UserService;
 
 import javax.validation.Valid;
@@ -38,16 +38,16 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CreateUserDto.class))),
+                            schema = @Schema(implementation = UserCreateDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @PostMapping
-    public ResponseEntity<CreateUserDto> addUser(
-            @ApiParam(value = "user", required = true) @Valid @RequestBody CreateUserDto createUserDto
+    public ResponseEntity<UserCreateDto> addUser(
+            @ApiParam(value = "user", required = true) @Valid @RequestBody UserCreateDto userCreateDto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(createUserDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userCreateDto));
     }
 
     @ApiOperation(
@@ -78,17 +78,17 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = NewPasswordDto.class))),
+                            schema = @Schema(implementation = UserNewPasswordDto.class))),
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @PostMapping(path = "set_password")
-    public ResponseEntity<NewPasswordDto> setPassword(
-            @ApiParam(value = "newPassword", required = true) @Valid @RequestBody NewPasswordDto newPasswordDto
+    public ResponseEntity<UserNewPasswordDto> setPassword(
+            @ApiParam(value = "newPassword", required = true) @Valid @RequestBody UserNewPasswordDto userNewPasswordDto
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.newPassword(newPasswordDto));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.newPassword(userNewPasswordDto));
     }
 
     @ApiOperation(

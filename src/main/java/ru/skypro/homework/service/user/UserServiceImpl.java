@@ -1,10 +1,10 @@
 package ru.skypro.homework.service.user;
 
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.CreateUserDto;
-import ru.skypro.homework.dto.NewPasswordDto;
 import ru.skypro.homework.dto.ResponseWrapperUserDto;
+import ru.skypro.homework.dto.UserCreateDto;
 import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.dto.UserNewPasswordDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Override
-    public CreateUserDto create(CreateUserDto createUserDto) {
-        createUserDto.setFirstName("firstName");
-        createUserDto.setLastName("lastName");
-        createUserDto.setPassword("password");
-        createUserDto.setPhone("phone");
-        createUserDto.setEmail("email");
+    public UserCreateDto create(UserCreateDto userCreateDto) {
+        userCreateDto.setFirstName("firstName");
+        userCreateDto.setLastName("lastName");
+        userCreateDto.setPassword("password");
+        userCreateDto.setPhone("phone");
+        userCreateDto.setEmail("email");
 
-        return createUserDto;
+        return userCreateDto;
     }
 
     @Override
@@ -29,11 +29,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public NewPasswordDto newPassword(NewPasswordDto newPasswordDto) {
-        newPasswordDto.setNewPassword("newPassword");
-        newPasswordDto.setCurrentPassword("currentPassword");
+    public UserNewPasswordDto newPassword(UserNewPasswordDto userNewPasswordDto) {
+        userNewPasswordDto.setNewPassword("newPassword");
+        userNewPasswordDto.setCurrentPassword("currentPassword");
 
-        return newPasswordDto;
+        return userNewPasswordDto;
     }
 
     @Override

@@ -29,6 +29,7 @@ public class WebSecurityConfig {
                 .password("password")
                 .roles("USER")
                 .build();
+
         return new InMemoryUserDetailsManager(user);
     }
 

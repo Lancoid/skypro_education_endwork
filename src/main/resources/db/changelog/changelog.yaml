@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001__create_table__users.xml
+  - include:
+      file: db/changelog/002__insert_table__users.xml
+  - include:
+      file: db/changelog/003__create_table__ads.xml
+  - include:
+      file: db/changelog/004__create_table__ads_images.xml
+  - include:
+      file: db/changelog/005__create_table__ads_comments.xml

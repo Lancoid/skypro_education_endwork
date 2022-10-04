@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="05" author="lance">
+        <createTable tableName="ads_comment" remarks="AdsComment Data">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+
+            <column name="ads_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="text" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="ads_comment" baseColumnNames="ads_id"
+                                 constraintName="FK__ads_id__ads_id"
+                                 referencedTableName="ads" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="ads_comment" baseColumnNames="user_id"
+                                 constraintName="FK__user_id__users_id"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
