@@ -11,7 +11,7 @@
             <column name="id" valueNumeric="1"/>
             <column name="created_at" value="2022-01-01 00:00:00"/>
             <column name="email" value="user_email@email.com"/>
-            <column name="password" value="password"/>
+            <column name="password" value="$2a$10$TCv5H/MnyK68NrpTMb2O6.i778gDmRKIhhK1nc68niNmfLZSaJw5e"/>
             <column name="phone" value="+7 111 222 0001"/>
             <column name="first_name" value="user_first_name"/>
             <column name="last_name" value="user_last_name"/>
@@ -22,7 +22,7 @@
             <column name="id" valueNumeric="2"/>
             <column name="created_at" value="2022-01-02 00:00:00"/>
             <column name="email" value="admin_email@email.com"/>
-            <column name="password" value="password"/>
+            <column name="password" value="$2a$10$TCv5H/MnyK68NrpTMb2O6.i778gDmRKIhhK1nc68niNmfLZSaJw5e"/>
             <column name="phone" value="+7 111 222 0002"/>
             <column name="first_name" value="admin_first_name"/>
             <column name="last_name" value="admin_last_name"/>

@@ -20,7 +20,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-
 public class AdsServiceImpl implements AdsService {
 
     private final AdsRepository adsRepository;

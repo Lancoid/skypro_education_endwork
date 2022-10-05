@@ -3,6 +3,7 @@ package ru.skypro.homework.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -35,12 +36,15 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    public User(String email, String password, String phone, String firstName, String lastName) {
+    private Role role;
+
+    public User(String email, String password, String phone, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
     }
 
     @PrePersist
@@ -58,6 +62,7 @@ public class User {
                 "    phone: " + toIndentedString(phone) + "\n" +
                 "    firstName: " + toIndentedString(firstName) + "\n" +
                 "    lastName: " + toIndentedString(lastName) + "\n" +
+                "    role: " + toIndentedString(role) + "\n" +
                 "}";
     }
 
