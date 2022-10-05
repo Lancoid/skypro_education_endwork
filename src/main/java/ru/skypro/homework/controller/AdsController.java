@@ -44,9 +44,9 @@ public class AdsController {
     })
     @PostMapping
     public ResponseEntity<AdsDto> addAds(
-            @ApiParam(value = "createAds", required = true) @Valid @RequestBody CreateAdsDto createAdsDto
+            @ApiParam(value = "createAds", required = true) @Valid @RequestBody AdsCreateDto adsCreateDto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adsService.create(createAdsDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(adsService.create(adsCreateDto));
     }
 
     @ApiOperation(
@@ -98,13 +98,13 @@ public class AdsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = FullAdsDto.class))),
+                            schema = @Schema(implementation = AdsFullDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "{id}")
-    public ResponseEntity<FullAdsDto> getAds(
+    public ResponseEntity<AdsFullDto> getAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.getOne(id));

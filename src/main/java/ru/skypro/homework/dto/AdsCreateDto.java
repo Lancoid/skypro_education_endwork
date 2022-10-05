@@ -1,9 +1,13 @@
 package ru.skypro.homework.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
-public class CreateAdsDto {
+@Getter
+@Setter
+public class AdsCreateDto {
 
     private Integer pk;
     private String title;

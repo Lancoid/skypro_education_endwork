@@ -1,19 +1,19 @@
 package ru.skypro.homework.service.ads;
 
+import ru.skypro.homework.dto.AdsCreateDto;
 import ru.skypro.homework.dto.AdsDto;
-import ru.skypro.homework.dto.CreateAdsDto;
-import ru.skypro.homework.dto.FullAdsDto;
+import ru.skypro.homework.dto.AdsFullDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsDto;
 
 public interface AdsService {
 
-    AdsDto create(CreateAdsDto createAdsDto);
+    AdsDto create(AdsCreateDto adsCreateDto);
 
     AdsDto update(Integer id, AdsDto adsDto);
 
     void delete(Integer id);
 
-    FullAdsDto getOne(Integer id);
+    AdsFullDto getOne(Integer id);
 
     ResponseWrapperAdsDto getAll();
 

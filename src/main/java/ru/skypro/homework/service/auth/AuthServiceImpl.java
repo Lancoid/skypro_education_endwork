@@ -6,8 +6,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.RegisterReqDto;
 import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.UserRegisterDto;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -35,15 +35,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean register(RegisterReqDto registerReqDto, Role role) {
-        if (manager.userExists(registerReqDto.getUsername())) {
+    public boolean register(UserRegisterDto userRegisterDto, Role role) {
+        if (manager.userExists(userRegisterDto.getUsername())) {
             return false;
         }
 
         manager.createUser(
                 User.withDefaultPasswordEncoder()
-                        .password(registerReqDto.getPassword())
-                        .username(registerReqDto.getUsername())
+                        .password(userRegisterDto.getPassword())
+                        .username(userRegisterDto.getUsername())
                         .roles(role.name())
                         .build()
         );

@@ -1,84 +1,132 @@
 package ru.skypro.homework.service.ads;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.skypro.homework.dto.AdsCreateDto;
 import ru.skypro.homework.dto.AdsDto;
-import ru.skypro.homework.dto.CreateAdsDto;
-import ru.skypro.homework.dto.FullAdsDto;
+import ru.skypro.homework.dto.AdsFullDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsDto;
+import ru.skypro.homework.mapper.AdsImageMapper;
+import ru.skypro.homework.mapper.AdsMapper;
+import ru.skypro.homework.model.Ads;
+import ru.skypro.homework.model.AdsImage;
+import ru.skypro.homework.model.User;
+import ru.skypro.homework.repository.AdsCommentRepository;
+import ru.skypro.homework.repository.AdsImageRepository;
+import ru.skypro.homework.repository.AdsRepository;
+import ru.skypro.homework.repository.UserRepository;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
 public class AdsServiceImpl implements AdsService {
 
-    @Override
-    public AdsDto create(CreateAdsDto createAdsDto) {
-        return getAds();
+    private final AdsRepository adsRepository;
+    private final AdsImageRepository adsImageRepository;
+    private final AdsCommentRepository adsCommentRepository;
+    private final UserRepository userRepository;
+
+    public AdsServiceImpl(
+            AdsRepository adsRepository,
+            AdsImageRepository adsImageRepository,
+            AdsCommentRepository adsCommentRepository,
+            UserRepository userRepository
+    ) {
+        this.adsRepository = adsRepository;
+        this.adsImageRepository = adsImageRepository;
+        this.adsCommentRepository = adsCommentRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
+    @Transactional
+    public AdsDto create(AdsCreateDto adsCreateDto) {
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new EntityNotFoundException("id: 1"));
+
+        Ads ads = AdsMapper.INSTANCE.adsCreateDtoToAds(adsCreateDto);
+        ads.setUser(user);
+        ads = adsRepository.save(ads);
+
+        AdsImage adsImage = AdsImageMapper.INSTANCE.adsToAdsImage(ads, adsCreateDto.getImage());
+        adsImageRepository.save(adsImage);
+
+        return AdsMapper.INSTANCE.adsToAdsDto(ads);
+    }
+
+    @Override
+    @Transactional
     public AdsDto update(Integer id, AdsDto adsDto) {
-        return getAds();
+        Ads createdAds = adsRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new EntityNotFoundException("id: " + id));
+
+        Ads ads = AdsMapper.INSTANCE.adsDtoToAds(adsDto);
+        ads.setId(Long.valueOf(id));
+        ads.setUser(createdAds.getUser());
+        ads.setCreatedAt(createdAds.getCreatedAt());
+        ads.setDescription(createdAds.getDescription());
+        ads = adsRepository.save(ads);
+
+        AdsImage adsImage = adsImageRepository.findByAdsEquals(ads);
+
+        if (null == adsImage) {
+            adsImage = new AdsImage();
+            adsImage.setAds(ads);
+        }
+
+        adsImage.setImage(adsDto.getImage());
+        adsImageRepository.save(adsImage);
+
+        return AdsMapper.INSTANCE.adsToAdsDto(ads);
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
+        Ads ads = adsRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new EntityNotFoundException("id: " + id));
 
+        adsCommentRepository.deleteByAdsEquals(ads);
+        adsImageRepository.deleteByAdsEquals(ads);
+        adsRepository.delete(ads);
     }
 
     @Override
-    public FullAdsDto getOne(Integer id) {
-        FullAdsDto fullAdsDto = new FullAdsDto();
+    public AdsFullDto getOne(Integer id) {
+        Ads ads = adsRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new EntityNotFoundException("id: " + id));
 
-        fullAdsDto.setPk(0);
-
-        fullAdsDto.setAuthorLastName("authorLastName");
-        fullAdsDto.setAuthorFirstName("authorFirstName");
-        fullAdsDto.setEmail("email");
-        fullAdsDto.setPhone("phone");
-        fullAdsDto.setTitle("title");
-        fullAdsDto.setImage("image");
-        fullAdsDto.setDescription("description");
-        fullAdsDto.setPrice(5);
-
-        return fullAdsDto;
+        return AdsMapper.INSTANCE.adsToAdsFullDto(ads);
     }
 
     @Override
     public ResponseWrapperAdsDto getAll() {
-        List<AdsDto> list = new ArrayList<>();
-        list.add(getAds());
+        List<Ads> list = adsRepository.findAll();
 
         ResponseWrapperAdsDto responseWrapperAdsDto = new ResponseWrapperAdsDto();
-        responseWrapperAdsDto.setCount(list.size());
-        responseWrapperAdsDto.setResults(list);
+
+        for (Ads ads : list) {
+            responseWrapperAdsDto.setOneDto(AdsMapper.INSTANCE.adsToAdsDto(ads));
+        }
 
         return responseWrapperAdsDto;
     }
 
     @Override
     public ResponseWrapperAdsDto getAllMine() {
-        List<AdsDto> list = new ArrayList<>();
-        list.add(getAds());
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new EntityNotFoundException("id: 1"));
+
+        List<Ads> list = adsRepository.findByUserEquals(user);
 
         ResponseWrapperAdsDto responseWrapperAdsDto = new ResponseWrapperAdsDto();
-        responseWrapperAdsDto.setCount(list.size());
-        responseWrapperAdsDto.setResults(list);
+
+        for (Ads ads : list) {
+            responseWrapperAdsDto.setOneDto(AdsMapper.INSTANCE.adsToAdsDto(ads));
+        }
 
         return responseWrapperAdsDto;
-    }
-
-    private AdsDto getAds() {
-        AdsDto adsDto = new AdsDto();
-
-        adsDto.setPk(1);
-        adsDto.setTitle("title");
-        adsDto.setImage("image");
-        adsDto.setAuthor(6);
-        adsDto.setPrice(5);
-
-        return adsDto;
     }
 
 }
