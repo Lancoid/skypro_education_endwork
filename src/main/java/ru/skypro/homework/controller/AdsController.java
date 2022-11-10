@@ -12,11 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.service.ads.AdsService;
 import ru.skypro.homework.service.adsComment.AdsCommentService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -44,9 +46,16 @@ public class AdsController {
     })
     @PostMapping
     public ResponseEntity<AdsDto> addAds(
-            @ApiParam(value = "createAds", required = true) @Valid @RequestBody AdsCreateDto adsCreateDto
+            @RequestPart("properties") @Valid AdsCreateDto adsCreateDto,
+            @RequestPart("image") @Valid @NotNull MultipartFile file
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(adsService.create(adsCreateDto));
+        adsCreateDto.setImage(file);
+
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(adsService.create(adsCreateDto));
+        } catch (Throwable throwable) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new AdsDto());
+        }
     }
 
     @ApiOperation(
@@ -111,8 +120,8 @@ public class AdsController {
     }
 
     @ApiOperation(
-            value = "getALLAds",
-            nickname = "getALLAdsUsingGET",
+            value = "getAllAds",
+            nickname = "getAllAdsUsingGET",
             notes = "Получение всех объявлений"
     )
     @ApiResponses(value = {
@@ -124,7 +133,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping
-    public ResponseEntity<ResponseWrapperAdsDto> getALLAds() {
+    public ResponseEntity<ResponseWrapperAdsDto> getAllAds() {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.getAll());
     }
 
@@ -142,13 +151,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "me")
-    public ResponseEntity<ResponseWrapperAdsDto> getAdsMe(
-            @ApiParam(value = "") @Valid @RequestParam(value = "authenticated", required = false) Boolean authenticated,
-            @ApiParam(value = "") @Valid @RequestParam(value = "authorities[0].authority", required = false) String authorities0Authority,
-            @ApiParam(value = "", defaultValue = "null") @Valid @RequestParam(value = "credentials", required = false, defaultValue = "null") Object credentials,
-            @ApiParam(value = "", defaultValue = "null") @Valid @RequestParam(value = "details", required = false, defaultValue = "null") Object details,
-            @ApiParam(value = "", defaultValue = "null") @Valid @RequestParam(value = "principal", required = false, defaultValue = "null") Object principal
-    ) {
+    public ResponseEntity<ResponseWrapperAdsDto> getAdsMe() {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.getAllMine());
     }
 
@@ -165,7 +168,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
-    @PostMapping(path = "{ad_pk}/comment")
+    @PostMapping(path = "{ad_pk}/comments")
     public ResponseEntity<AdsCommentDto> addAdsComments(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "comment", required = true) @Valid @RequestBody AdsCommentDto adsCommentDto
@@ -186,7 +189,7 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
-    @PatchMapping(path = "{ad_pk}/comment/{id}")
+    @PatchMapping(path = "{ad_pk}/comments/{id}")
     public ResponseEntity<AdsCommentDto> updateAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id,
@@ -206,7 +209,7 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
-    @DeleteMapping(path = "{ad_pk}/comment/{id}")
+    @DeleteMapping(path = "{ad_pk}/comments/{id}")
     public ResponseEntity<Void> deleteAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
@@ -229,7 +232,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
-    @GetMapping(path = "{ad_pk}/comment/{id}")
+    @GetMapping(path = "{ad_pk}/comments/{id}")
     public ResponseEntity<AdsCommentDto> getAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
@@ -250,7 +253,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
-    @GetMapping(path = "{ad_pk}/comment")
+    @GetMapping(path = "{ad_pk}/comments")
     public ResponseEntity<ResponseWrapperAdsCommentDto> getAdsComments(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk
     ) {

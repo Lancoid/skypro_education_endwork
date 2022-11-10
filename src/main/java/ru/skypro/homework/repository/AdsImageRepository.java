@@ -7,8 +7,8 @@ import ru.skypro.homework.model.AdsImage;
 
 public interface AdsImageRepository extends JpaRepository<AdsImage, Long> {
 
-    AdsImage findByAdsEquals(@NonNull Ads ads);
-
     void deleteByAdsEquals(@NonNull Ads ads);
+
+    AdsImage findByFileNameEqualsIgnoreCase(@NonNull String fileName);
 
 }

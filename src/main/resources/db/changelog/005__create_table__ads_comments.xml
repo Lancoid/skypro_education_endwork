@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
@@ -31,12 +31,22 @@
 
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="ads_comment" baseColumnNames="ads_id"
+        <addForeignKeyConstraint baseTableName="ads_comment"
+                                 baseColumnNames="ads_id"
                                  constraintName="FK__ads_id__ads_id"
-                                 referencedTableName="ads" referencedColumnNames="id"/>
+                                 referencedTableName="ads"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"
+        />
 
-        <addForeignKeyConstraint baseTableName="ads_comment" baseColumnNames="user_id"
+        <addForeignKeyConstraint baseTableName="ads_comment"
+                                 baseColumnNames="user_id"
                                  constraintName="FK__user_id__users_id"
-                                 referencedTableName="users" referencedColumnNames="id"/>
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"
+        />
     </changeSet>
 </databaseChangeLog>

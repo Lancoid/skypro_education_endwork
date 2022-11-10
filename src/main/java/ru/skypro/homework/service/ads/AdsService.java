@@ -5,9 +5,11 @@ import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.AdsFullDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsDto;
 
+import java.io.IOException;
+
 public interface AdsService {
 
-    AdsDto create(AdsCreateDto adsCreateDto);
+    AdsDto create(AdsCreateDto adsCreateDto) throws IOException;
 
     AdsDto update(Integer id, AdsDto adsDto);
 

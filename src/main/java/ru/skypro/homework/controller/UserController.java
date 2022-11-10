@@ -47,7 +47,7 @@ public class UserController {
     public ResponseEntity<UserCreateDto> addUser(
             @ApiParam(value = "user", required = true) @Valid @RequestBody UserCreateDto userCreateDto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userCreateDto);
     }
 
     @ApiOperation(
@@ -125,8 +125,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "me")
-    public ResponseEntity<ResponseWrapperUserDto> getUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+    public ResponseEntity<UserDto> getUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getMe());
     }
 
 }

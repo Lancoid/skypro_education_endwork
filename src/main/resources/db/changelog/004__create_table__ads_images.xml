@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
@@ -13,18 +13,35 @@
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
 
-            <column name="ads_id" type="bigint">
+            <column name="file_size" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="image" type="varchar(255)">
+            <column name="media_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="url" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="data" type="varbinary(1024)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ads_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="ads_image" baseColumnNames="ads_id"
+        <addForeignKeyConstraint baseTableName="ads_image"
+                                 baseColumnNames="ads_id"
                                  constraintName="FK__ads_id__ads_id"
-                                 referencedTableName="ads" referencedColumnNames="id"/>
+                                 referencedTableName="ads"
+                                 referencedColumnNames="id"
+                                 onUpdate="NO ACTION"
+                                 onDelete="NO ACTION"
+        />
     </changeSet>
 </databaseChangeLog>

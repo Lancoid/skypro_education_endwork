@@ -1,6 +1,7 @@
 package ru.skypro.homework.service.adsComment;
 
 import org.springframework.stereotype.Service;
+import ru.skypro.homework.component.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCommentDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsCommentDto;
 import ru.skypro.homework.mapper.AdsCommentMapper;
@@ -20,21 +21,30 @@ public class AdsCommentServiceImpl implements AdsCommentService {
     private final AdsRepository adsRepository;
     private final AdsCommentRepository adsCommentRepository;
     private final UserRepository userRepository;
+    private final AuthenticationFacade authenticationFacade;
 
     public AdsCommentServiceImpl(
             AdsRepository adsRepository,
             AdsCommentRepository adsCommentRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            AuthenticationFacade authenticationFacade
     ) {
         this.adsRepository = adsRepository;
         this.adsCommentRepository = adsCommentRepository;
         this.userRepository = userRepository;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @Override
     public AdsCommentDto create(String adPk, AdsCommentDto adsCommentDto) {
-        User user = userRepository.findById(1L)
-                .orElseThrow(() -> new EntityNotFoundException("id: 1"));
+        Long userId = authenticationFacade.getUserId();
+
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + userId));
 
         Ads createdAds = adsRepository.findById(Long.valueOf(adPk))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + adPk));
