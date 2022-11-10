@@ -1,7 +1,6 @@
 package ru.skypro.homework.service.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,23 +17,15 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
 
     @Override
-    public void login(String userName, String password) {
+    public boolean login(String userName, String password) {
         UserDetails user = userDetailsService.loadUserByUsername(userName);
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Неверно указан пароль!");
-        }
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
     @Override
     public boolean register(UserCreateDto userCreateDto) {
-        try {
-            userService.create(userCreateDto);
-
-            return true;
-        } catch (Throwable throwable) {
-            return false;
-        }
+        return userService.create(userCreateDto);
     }
 
 }

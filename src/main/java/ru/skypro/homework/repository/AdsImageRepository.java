@@ -5,10 +5,12 @@ import org.springframework.lang.NonNull;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.model.AdsImage;
 
+import java.util.Optional;
+
 public interface AdsImageRepository extends JpaRepository<AdsImage, Long> {
 
     void deleteByAdsEquals(@NonNull Ads ads);
 
-    AdsImage findByFileNameEqualsIgnoreCase(@NonNull String fileName);
+    Optional<AdsImage> findByFileNameEqualsIgnoreCase(@NonNull String fileName);
 
 }

@@ -12,25 +12,26 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.webjars.NotFoundException;
 import ru.skypro.homework.dto.AdsFullDto;
 import ru.skypro.homework.model.AdsImage;
 import ru.skypro.homework.repository.AdsImageRepository;
 
+import javax.persistence.EntityNotFoundException;
+
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
-@RequestMapping("/static")
+@RequestMapping("/image")
 @RequiredArgsConstructor
-@Api(tags = {"Статика"})
-public class StaticController {
+@Api(tags = {"Изображения"})
+public class ImageController {
 
     private final AdsImageRepository adsImageRepository;
 
     @ApiOperation(
-            value = "getAds",
-            nickname = "getAdsUsingGET",
-            notes = "Получение одного объявления"
+            value = "getImageByName",
+            nickname = "getImageByNameUsingGET",
+            notes = "Получение одного изображения по имени"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok",
@@ -41,14 +42,11 @@ public class StaticController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "{name}")
-    public ResponseEntity<byte[]> getAds(
+    public ResponseEntity<byte[]> getImageByName(
             @ApiParam(value = "name", required = true) @PathVariable("name") String name
     ) {
-        AdsImage adsImage = adsImageRepository.findByFileNameEqualsIgnoreCase(name);
-
-        if (null == adsImage) {
-            throw new NotFoundException("Не найдено.");
-        }
+        AdsImage adsImage = adsImageRepository.findByFileNameEqualsIgnoreCase(name)
+                .orElseThrow(() -> new EntityNotFoundException("name: " + name));
 
         return ResponseEntity
                 .ok()

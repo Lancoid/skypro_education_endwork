@@ -19,6 +19,7 @@ import ru.skypro.homework.service.adsComment.AdsCommentService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -49,10 +50,8 @@ public class AdsController {
             @RequestPart("properties") @Valid AdsCreateDto adsCreateDto,
             @RequestPart("image") @Valid @NotNull MultipartFile file
     ) {
-        adsCreateDto.setImage(file);
-
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(adsService.create(adsCreateDto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(adsService.create(adsCreateDto, file));
         } catch (Throwable throwable) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new AdsDto());
         }
@@ -151,8 +150,8 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "me")
-    public ResponseEntity<ResponseWrapperAdsDto> getAdsMe() {
-        return ResponseEntity.status(HttpStatus.OK).body(adsService.getAllMine());
+    public ResponseEntity<List<AdsDto>> getAdsMe() {
+        return ResponseEntity.status(HttpStatus.OK).body(adsService.getAllMine().getResults());
     }
 
     @ApiOperation(

@@ -22,10 +22,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
-        try {
-            authService.login(userLoginDto.getUsername(), userLoginDto.getPassword());
+        if (authService.login(userLoginDto.getUsername(), userLoginDto.getPassword())) {
             return ResponseEntity.ok().build();
-        } catch (Throwable throwable) {
+        } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }

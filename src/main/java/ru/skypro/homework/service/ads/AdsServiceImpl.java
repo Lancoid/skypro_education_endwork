@@ -2,6 +2,7 @@ package ru.skypro.homework.service.ads;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.component.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCreateDto;
 import ru.skypro.homework.dto.AdsDto;
@@ -48,7 +49,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     @Transactional
-    public AdsDto create(AdsCreateDto adsCreateDto) throws IOException {
+    public AdsDto create(AdsCreateDto adsCreateDto, MultipartFile file) throws IOException {
         Ads ads = AdsMapper.INSTANCE.adsCreateDtoToAds(adsCreateDto);
 
         Long userId = authenticationFacade.getUserId();
@@ -63,7 +64,7 @@ public class AdsServiceImpl implements AdsService {
         ads.setUser(user);
         ads = adsRepository.save(ads);
 
-        adsImageService.save(ads, adsCreateDto.getImage());
+        adsImageService.save(ads, file);
 
         return AdsMapper.INSTANCE.adsToAdsDto(ads);
     }

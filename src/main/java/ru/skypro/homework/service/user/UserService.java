@@ -6,7 +6,7 @@ import ru.skypro.homework.dto.UserNewPasswordDto;
 
 public interface UserService {
 
-    void create(UserCreateDto userCreateDto);
+    boolean create(UserCreateDto userCreateDto);
 
     UserDto update(UserDto userDto);
 

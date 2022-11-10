@@ -1,7 +1,5 @@
 package ru.skypro.homework.service.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final AuthenticationFacade authenticationFacade;
-    Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     public UserServiceImpl(
@@ -36,11 +33,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(UserCreateDto userCreateDto) {
+    public boolean create(UserCreateDto userCreateDto) {
         User user = UserMapper.INSTANCE.userCreateDtoToUser(userCreateDto);
 
         if (userRepository.findByEmailEqualsIgnoreCase(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Пользователь уже зарегистрирован");
+            return false;
         }
 
         if (user.getRole() == null) {
@@ -51,9 +48,7 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        if (null == user.getId()) {
-            throw new RuntimeException("Ошибка сохранения пользователя");
-        }
+        return null != user.getId();
     }
 
     @Override

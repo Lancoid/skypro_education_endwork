@@ -28,7 +28,7 @@ public class AdsImageServiceImpl implements AdsImageService {
         adsImage.setFileName(UUID.randomUUID().toString());
         adsImage.setMediaType(file.getContentType());
         adsImage.setData(file.getBytes());
-        adsImage.setUrl("/static/" + adsImage.getFileName());
+        adsImage.setUrl("/image/" + adsImage.getFileName());
         adsImage.setAds(ads);
 
         adsImageRepository.saveAndFlush(adsImage);
