@@ -53,15 +53,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto userDto) {
-        if (null == userDto.getId()) {
-            Long userId = authenticationFacade.getUserId();
+        Long userId = authenticationFacade.getUserId();
 
-            if (null == userId) {
-                throw new RuntimeException("Ошибка определения пользователя");
-            }
-
-            userDto.setId(userId.intValue());
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
         }
+
+        userDto.setId(userId.intValue());
 
         User user = userRepository.findById(userDto.getId().longValue())
                 .orElseThrow(() -> new EntityNotFoundException("id: " + userDto.getId()));

@@ -5,11 +5,12 @@ import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.model.Ads;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 public interface AdsImageService {
 
     void save(Ads ads, MultipartFile file) throws IOException;
 
-    AdsDto update(Long adsId, MultipartFile file);
+    AdsDto update(Long adsId, MultipartFile file) throws AccessDeniedException;
 
 }
