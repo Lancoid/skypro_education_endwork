@@ -13,6 +13,10 @@
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
 
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="file_size" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -40,8 +44,8 @@
                                  constraintName="FK__ads_id__ads_id"
                                  referencedTableName="ads"
                                  referencedColumnNames="id"
-                                 onUpdate="NO ACTION"
-                                 onDelete="NO ACTION"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
         />
     </changeSet>
 </databaseChangeLog>

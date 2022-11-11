@@ -35,10 +35,10 @@ public class Ads {
 
     private Long price;
 
-    @OneToOne(mappedBy = "ads", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "ads", cascade = CascadeType.DETACH)
     private AdsImage adsImage;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.DETACH)
     @JoinColumn(name = "ads_id")
     private List<AdsComment> comments = new ArrayList<>();
 

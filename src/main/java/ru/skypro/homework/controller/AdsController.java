@@ -91,8 +91,6 @@ public class AdsController {
             @PathVariable("id") @Valid Long id,
             @RequestPart("image") @Valid @NotNull MultipartFile file
     ) {
-        System.out.println(id);
-        System.out.println(file.getOriginalFilename());
         return ResponseEntity.ok(adsImageService.update(id, file));
     }
 

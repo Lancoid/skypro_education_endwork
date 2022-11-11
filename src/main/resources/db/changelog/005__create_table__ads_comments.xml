@@ -36,8 +36,8 @@
                                  constraintName="FK__ads_id__ads_id"
                                  referencedTableName="ads"
                                  referencedColumnNames="id"
-                                 onUpdate="NO ACTION"
-                                 onDelete="NO ACTION"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
         />
 
         <addForeignKeyConstraint baseTableName="ads_comment"
@@ -45,8 +45,8 @@
                                  constraintName="FK__user_id__users_id"
                                  referencedTableName="users"
                                  referencedColumnNames="id"
-                                 onUpdate="NO ACTION"
-                                 onDelete="NO ACTION"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
         />
     </changeSet>
 </databaseChangeLog>
