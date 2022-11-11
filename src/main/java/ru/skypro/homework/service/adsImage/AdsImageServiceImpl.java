@@ -2,21 +2,28 @@ package ru.skypro.homework.service.adsImage;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.mapper.AdsImageMapper;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.model.AdsImage;
 import ru.skypro.homework.repository.AdsImageRepository;
+import ru.skypro.homework.repository.AdsRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
 @Service
 public class AdsImageServiceImpl implements AdsImageService {
 
+    private final AdsRepository adsRepository;
     private final AdsImageRepository adsImageRepository;
 
     public AdsImageServiceImpl(
+            AdsRepository adsRepository,
             AdsImageRepository adsImageRepository
     ) {
+        this.adsRepository = adsRepository;
         this.adsImageRepository = adsImageRepository;
     }
 
@@ -34,4 +41,26 @@ public class AdsImageServiceImpl implements AdsImageService {
         adsImageRepository.saveAndFlush(adsImage);
     }
 
+
+    public AdsDto update(Long adsId, MultipartFile file) {
+        Ads ads = adsRepository.findById(adsId)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + adsId));
+
+        AdsImage adsImage = adsImageRepository.findByAdsEquals(ads)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + adsId));
+
+        try {
+            adsImage.setFileSize(file.getSize());
+            adsImage.setMediaType(file.getContentType());
+            adsImage.setData(file.getBytes());
+            adsImage.setUrl("/image/" + adsImage.getFileName());
+            adsImage.setAds(ads);
+
+            adsImage = adsImageRepository.saveAndFlush(adsImage);
+        } catch (Throwable throwable) {
+            return null;
+        }
+
+        return AdsImageMapper.INSTANCE.adsImageToAdsDto(adsImage);
+    }
 }

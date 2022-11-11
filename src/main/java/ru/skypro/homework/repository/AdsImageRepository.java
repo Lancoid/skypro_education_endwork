@@ -13,4 +13,6 @@ public interface AdsImageRepository extends JpaRepository<AdsImage, Long> {
 
     Optional<AdsImage> findByFileNameEqualsIgnoreCase(@NonNull String fileName);
 
+    Optional<AdsImage> findByAdsEquals(@NonNull Ads ads);
+
 }

@@ -10,12 +10,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.service.ads.AdsService;
 import ru.skypro.homework.service.adsComment.AdsCommentService;
+import ru.skypro.homework.service.adsImage.AdsImageService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ public class AdsController {
 
     private final AdsService adsService;
     private final AdsCommentService adsCommentService;
+    private final AdsImageService adsImageService;
 
     @ApiOperation(
             value = "addAds",
@@ -76,6 +79,21 @@ public class AdsController {
             @ApiParam(value = "ads", required = true) @Valid @RequestBody AdsDto adsDto
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.update(id, adsDto));
+    }
+
+    @ApiOperation(
+            value = "updateAdsImage",
+            nickname = "updateAdsImageUsingPATCH",
+            notes = "Редактирование изображения объявления"
+    )
+    @PatchMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AdsDto> updateAdsImage(
+            @PathVariable("id") @Valid Long id,
+            @RequestPart("image") @Valid @NotNull MultipartFile file
+    ) {
+        System.out.println(id);
+        System.out.println(file.getOriginalFilename());
+        return ResponseEntity.ok(adsImageService.update(id, file));
     }
 
     @ApiOperation(

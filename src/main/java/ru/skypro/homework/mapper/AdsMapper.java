@@ -25,6 +25,7 @@ public interface AdsMapper {
     @Mapping(target = "id", source = "pk")
     Ads adsCreateDtoToAds(AdsCreateDto ads);
 
+    @Mapping(target = "author_id", source = "user.id")
     @Mapping(target = "pk", source = "id")
     @Mapping(target = "image", source = "adsImage.url")
     @Mapping(target = "email", source = "user.email")
