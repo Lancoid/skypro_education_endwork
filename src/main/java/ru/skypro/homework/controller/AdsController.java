@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
@@ -29,6 +30,7 @@ import java.util.List;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 @Api(tags = {"Объявления"})
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class AdsController {
 
     private final AdsService adsService;
@@ -148,6 +150,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping
+    @PreAuthorize("permitAll")
     public ResponseEntity<ResponseWrapperAdsDto> getAllAds() {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.getAll());
     }
