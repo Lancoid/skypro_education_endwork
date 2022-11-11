@@ -91,8 +91,6 @@ public class AdsServiceImpl implements AdsService {
         Ads ads = adsRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + id));
 
-        adsCommentRepository.deleteByAdsEquals(ads);
-        adsImageRepository.deleteByAdsEquals(ads);
         adsRepository.deleteById(Long.valueOf(id));
     }
 
