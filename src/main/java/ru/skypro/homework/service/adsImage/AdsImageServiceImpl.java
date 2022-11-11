@@ -2,7 +2,7 @@ package ru.skypro.homework.service.adsImage;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.component.AuthenticationFacade;
+import ru.skypro.homework.component.authenticationFacade.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.mapper.AdsImageMapper;
 import ru.skypro.homework.model.Ads;

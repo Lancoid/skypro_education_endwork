@@ -1,7 +1,7 @@
 package ru.skypro.homework.service.adsComment;
 
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.component.AuthenticationFacade;
+import ru.skypro.homework.component.authenticationFacade.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCommentDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsCommentDto;
 import ru.skypro.homework.mapper.AdsCommentMapper;

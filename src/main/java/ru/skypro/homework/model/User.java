@@ -3,7 +3,7 @@ package ru.skypro.homework.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.type.RoleType;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -37,9 +37,9 @@ public class User {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleType role;
 
-    public User(String email, String password, String phone, String firstName, String lastName, Role role) {
+    public User(String email, String password, String phone, String firstName, String lastName, RoleType role) {
         this.email = email;
         this.password = password;
         this.phone = phone;

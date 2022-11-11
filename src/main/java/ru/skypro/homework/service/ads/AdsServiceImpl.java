@@ -3,7 +3,7 @@ package ru.skypro.homework.service.ads;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.component.AuthenticationFacade;
+import ru.skypro.homework.component.authenticationFacade.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCreateDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.AdsFullDto;

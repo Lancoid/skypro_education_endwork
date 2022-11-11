@@ -1,8 +1,8 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.type;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public enum Role implements GrantedAuthority {
+public enum RoleType implements GrantedAuthority {
 
     USER,
     ADMIN;
