@@ -36,6 +36,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public User(String email, String password, String phone, String firstName, String lastName, Role role) {

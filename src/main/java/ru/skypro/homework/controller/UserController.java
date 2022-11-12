@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.ResponseWrapperUserDto;
 import ru.skypro.homework.dto.UserCreateDto;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Api(tags = {"Пользователи"})
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class UserController {
 
     private final UserService userService;
@@ -47,7 +49,7 @@ public class UserController {
     public ResponseEntity<UserCreateDto> addUser(
             @ApiParam(value = "user", required = true) @Valid @RequestBody UserCreateDto userCreateDto
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userCreateDto);
     }
 
     @ApiOperation(
@@ -125,8 +127,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "me")
-    public ResponseEntity<ResponseWrapperUserDto> getUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+    public ResponseEntity<UserDto> getUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getMe());
     }
 
 }

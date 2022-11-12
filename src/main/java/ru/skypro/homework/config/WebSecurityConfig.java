@@ -3,6 +3,8 @@ package ru.skypro.homework.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -16,23 +18,30 @@ public class WebSecurityConfig {
             "/v3/api-docs",
             "/webjars/**",
             "/login",
-            "/register"
+            "/register",
+            "/image/**",
+            "/ads",
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().ignoringAntMatchers(AUTH_WHITELIST).and()
-                .authorizeHttpRequests((auth) ->
-                        auth
+                .authorizeHttpRequests((authz) ->
+                        authz
                                 .mvcMatchers(AUTH_WHITELIST).permitAll()
-                                .anyRequest().permitAll()
+                                .mvcMatchers("/ads/**", "/users/**").authenticated()
                 )
                 .csrf().disable()
-                .cors().disable()
+                .cors().and()
                 .httpBasic(withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

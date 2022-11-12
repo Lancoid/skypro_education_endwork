@@ -2,21 +2,23 @@ package ru.skypro.homework.service.ads;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.component.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCreateDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.AdsFullDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsDto;
-import ru.skypro.homework.mapper.AdsImageMapper;
 import ru.skypro.homework.mapper.AdsMapper;
 import ru.skypro.homework.model.Ads;
-import ru.skypro.homework.model.AdsImage;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.AdsCommentRepository;
 import ru.skypro.homework.repository.AdsImageRepository;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.adsImage.AdsImageService;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -26,31 +28,43 @@ public class AdsServiceImpl implements AdsService {
     private final AdsImageRepository adsImageRepository;
     private final AdsCommentRepository adsCommentRepository;
     private final UserRepository userRepository;
+    private final AuthenticationFacade authenticationFacade;
+    private final AdsImageService adsImageService;
 
     public AdsServiceImpl(
             AdsRepository adsRepository,
             AdsImageRepository adsImageRepository,
             AdsCommentRepository adsCommentRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            AdsImageService adsImageService,
+            AuthenticationFacade authenticationFacade
     ) {
         this.adsRepository = adsRepository;
         this.adsImageRepository = adsImageRepository;
         this.adsCommentRepository = adsCommentRepository;
         this.userRepository = userRepository;
+        this.adsImageService = adsImageService;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @Override
     @Transactional
-    public AdsDto create(AdsCreateDto adsCreateDto) {
-        User user = userRepository.findById(1L)
-                .orElseThrow(() -> new EntityNotFoundException("id: 1"));
-
+    public AdsDto create(AdsCreateDto adsCreateDto, MultipartFile file) throws IOException {
         Ads ads = AdsMapper.INSTANCE.adsCreateDtoToAds(adsCreateDto);
+
+        Long userId = authenticationFacade.getUserId();
+
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + userId));
+
         ads.setUser(user);
         ads = adsRepository.save(ads);
 
-        AdsImage adsImage = AdsImageMapper.INSTANCE.adsToAdsImage(ads, adsCreateDto.getImage());
-        adsImageRepository.save(adsImage);
+        adsImageService.save(ads, file);
 
         return AdsMapper.INSTANCE.adsToAdsDto(ads);
     }
@@ -68,16 +82,6 @@ public class AdsServiceImpl implements AdsService {
         ads.setDescription(createdAds.getDescription());
         ads = adsRepository.save(ads);
 
-        AdsImage adsImage = adsImageRepository.findByAdsEquals(ads);
-
-        if (null == adsImage) {
-            adsImage = new AdsImage();
-            adsImage.setAds(ads);
-        }
-
-        adsImage.setImage(adsDto.getImage());
-        adsImageRepository.save(adsImage);
-
         return AdsMapper.INSTANCE.adsToAdsDto(ads);
     }
 
@@ -87,9 +91,7 @@ public class AdsServiceImpl implements AdsService {
         Ads ads = adsRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + id));
 
-        adsCommentRepository.deleteByAdsEquals(ads);
-        adsImageRepository.deleteByAdsEquals(ads);
-        adsRepository.delete(ads);
+        adsRepository.deleteById(Long.valueOf(id));
     }
 
     @Override
@@ -115,8 +117,14 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public ResponseWrapperAdsDto getAllMine() {
-        User user = userRepository.findById(1L)
-                .orElseThrow(() -> new EntityNotFoundException("id: 1"));
+        Long userId = authenticationFacade.getUserId();
+
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + userId));
 
         List<Ads> list = adsRepository.findByUserEquals(user);
 

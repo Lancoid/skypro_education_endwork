@@ -19,17 +19,30 @@ public class AdsImage {
     @GeneratedValue
     private Long id;
 
+    @Column(name = "file_size")
+    private Long fileSize;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "media_type")
+    private String mediaType;
+
+    private String url;
+
+    private byte[] data;
+
     @OneToOne(fetch = FetchType.LAZY)
     private Ads ads;
-
-    private String image;
 
     @Override
     public String toString() {
         return "class AdsImage {\n" +
                 "    id: " + toIndentedString(id) + "\n" +
+                "    fileSize: " + toIndentedString(fileSize) + "\n" +
+                "    mediaType: " + toIndentedString(mediaType) + "\n" +
+                "    url: " + toIndentedString(url) + "\n" +
                 "    Ads: " + toIndentedString(ads) + "\n" +
-                "    image: " + toIndentedString(image) + "\n" +
                 "}";
     }
 

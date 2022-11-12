@@ -1,43 +1,78 @@
 package ru.skypro.homework.service.user;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.*;
+import ru.skypro.homework.component.AuthenticationFacade;
+import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.UserCreateDto;
+import ru.skypro.homework.dto.UserDto;
+import ru.skypro.homework.dto.UserNewPasswordDto;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final AuthenticationFacade authenticationFacade;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    @Autowired
+    public UserServiceImpl(
+            UserRepository userRepository,
+            PasswordEncoder encoder,
+            AuthenticationFacade authenticationFacade
+    ) {
         this.userRepository = userRepository;
-        this.encoder = new BCryptPasswordEncoder();
+        this.encoder = encoder;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @Override
-    public UserCreateDto create(UserCreateDto userCreateDto) {
+    public boolean create(UserCreateDto userCreateDto) {
         User user = UserMapper.INSTANCE.userCreateDtoToUser(userCreateDto);
 
+        if (userRepository.findByEmailEqualsIgnoreCase(user.getEmail()).isPresent()) {
+            return false;
+        }
+
+        if (user.getRole() == null) {
+            user.setRole(Role.USER);
+        }
+
         user.setPassword(encoder.encode(userCreateDto.getPassword()));
-        user.setRole(Role.USER);
 
         user = userRepository.save(user);
 
-        return UserMapper.INSTANCE.userToUserCreateDto(user);
+        return null != user.getId();
     }
 
     @Override
     public UserDto update(UserDto userDto) {
-        User user = UserMapper.INSTANCE.userDtoToUser(userDto);
-        user.setId(1L);
+        if (null == userDto.getId()) {
+            Long userId = authenticationFacade.getUserId();
+
+            if (null == userId) {
+                throw new RuntimeException("Ошибка определения пользователя");
+            }
+
+            userDto.setId(userId.intValue());
+        }
+
+        User user = userRepository.findById(userDto.getId().longValue())
+                .orElseThrow(() -> new EntityNotFoundException("id: " + userDto.getId()));
+
+        if (null != userDto.getEmail()) {
+            user.setEmail(userDto.getEmail());
+        }
+
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhone(userDto.getPhone());
 
         user = userRepository.save(user);
 
@@ -46,14 +81,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserNewPasswordDto newPassword(UserNewPasswordDto userNewPasswordDto) {
-        User user = userRepository.findById(1L)
-                .orElseThrow(() -> new EntityNotFoundException("id: 1"));
+        Long userId = authenticationFacade.getUserId();
+
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + userId));
 
         if (!encoder.matches(userNewPasswordDto.getCurrentPassword(), user.getPassword())) {
             throw new RuntimeException("Неверно введённый текущий пароль");
         }
 
         user.setPassword(encoder.encode(userNewPasswordDto.getNewPassword()));
+
         userRepository.save(user);
 
         return userNewPasswordDto;
@@ -68,16 +110,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseWrapperUserDto getAllUsers() {
-        List<User> list = userRepository.findAll();
+    public UserDto getMe() {
+        Long userId = authenticationFacade.getUserId();
 
-        ResponseWrapperUserDto responseWrapperUserDto = new ResponseWrapperUserDto();
-
-        for (User user : list) {
-            responseWrapperUserDto.setOneDto(UserMapper.INSTANCE.userToUserDto(user));
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
         }
 
-        return responseWrapperUserDto;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("id: " + userId));
+
+        return UserMapper.INSTANCE.userToUserDto(user);
     }
 
 }

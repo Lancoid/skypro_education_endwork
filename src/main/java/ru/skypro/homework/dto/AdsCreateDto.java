@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 public class AdsCreateDto {
 
-    private Integer pk;
     private String title;
     private String description;
-    private String image;
     private Integer price;
 
 }

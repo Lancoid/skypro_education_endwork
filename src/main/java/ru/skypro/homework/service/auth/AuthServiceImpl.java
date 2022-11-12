@@ -1,54 +1,31 @@
 package ru.skypro.homework.service.auth;
 
-import org.springframework.security.core.userdetails.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.Role;
-import ru.skypro.homework.dto.UserRegisterDto;
+import ru.skypro.homework.dto.UserCreateDto;
+import ru.skypro.homework.service.user.UserService;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserDetailsManager manager;
-
-    private final PasswordEncoder encoder;
-
-    public AuthServiceImpl(UserDetailsManager manager) {
-        this.manager = manager;
-        this.encoder = new BCryptPasswordEncoder();
-    }
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @Override
     public boolean login(String userName, String password) {
-        if (!manager.userExists(userName)) {
-            return false;
-        }
+        UserDetails user = userDetailsService.loadUserByUsername(userName);
 
-        UserDetails userDetails = manager.loadUserByUsername(userName);
-        String encryptedPassword = userDetails.getPassword();
-        String encryptedPasswordWithoutEncryptionType = encryptedPassword.substring(8);
-
-        return encoder.matches(password, encryptedPasswordWithoutEncryptionType);
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
     @Override
-    public boolean register(UserRegisterDto userRegisterDto, Role role) {
-        if (manager.userExists(userRegisterDto.getUsername())) {
-            return false;
-        }
-
-        manager.createUser(
-                User.withDefaultPasswordEncoder()
-                        .password(userRegisterDto.getPassword())
-                        .username(userRegisterDto.getUsername())
-                        .roles(role.name())
-                        .build()
-        );
-
-        return true;
+    public boolean register(UserCreateDto userCreateDto) {
+        return userService.create(userCreateDto);
     }
 
 }

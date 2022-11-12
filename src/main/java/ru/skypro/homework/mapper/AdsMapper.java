@@ -13,7 +13,7 @@ public interface AdsMapper {
 
     AdsMapper INSTANCE = Mappers.getMapper(AdsMapper.class);
 
-    @Mapping(target = "image", source = "adsImage.image")
+    @Mapping(target = "image", source = "adsImage.url")
     @Mapping(target = "pk", source = "id")
     @Mapping(target = "author", source = "user.id")
     AdsDto adsToAdsDto(Ads ads);
@@ -22,14 +22,11 @@ public interface AdsMapper {
     @Mapping(target = "id", source = "pk")
     Ads adsDtoToAds(AdsDto ads);
 
-    @Mapping(target = "pk", source = "id")
-    AdsCreateDto adsToAdsCreateDto(Ads ads);
-
-    @Mapping(target = "id", source = "pk")
     Ads adsCreateDtoToAds(AdsCreateDto ads);
 
+    @Mapping(target = "author_id", source = "user.id")
     @Mapping(target = "pk", source = "id")
-    @Mapping(target = "image", source = "adsImage.image")
+    @Mapping(target = "image", source = "adsImage.url")
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "authorLastName", source = "user.lastName")

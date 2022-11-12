@@ -6,6 +6,7 @@ import lombok.Data;
 public class AdsFullDto {
 
     private Integer pk;
+    private Long author_id;
     private String authorFirstName;
     private String authorLastName;
     private String email;

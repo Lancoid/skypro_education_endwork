@@ -22,7 +22,7 @@ public class Ads {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -35,10 +35,10 @@ public class Ads {
 
     private Long price;
 
-    @OneToOne(mappedBy = "ads", cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "ads", cascade = CascadeType.DETACH)
     private AdsImage adsImage;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.DETACH)
     @JoinColumn(name = "ads_id")
     private List<AdsComment> comments = new ArrayList<>();
 
