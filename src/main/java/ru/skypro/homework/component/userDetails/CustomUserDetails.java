@@ -1,4 +1,4 @@
-package ru.skypro.homework.component;
+package ru.skypro.homework.component.userDetails;
 
 import lombok.Getter;
 import ru.skypro.homework.model.User;

@@ -1,4 +1,4 @@
-package ru.skypro.homework.component;
+package ru.skypro.homework.service.userDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.skypro.homework.component.userDetails.CustomUserDetails;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 

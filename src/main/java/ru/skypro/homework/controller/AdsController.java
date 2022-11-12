@@ -22,6 +22,7 @@ import ru.skypro.homework.service.adsImage.AdsImageService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Slf4j
@@ -80,7 +81,7 @@ public class AdsController {
     public ResponseEntity<AdsDto> updateAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id,
             @ApiParam(value = "ads", required = true) @Valid @RequestBody AdsDto adsDto
-    ) {
+    ) throws AccessDeniedException {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.update(id, adsDto));
     }
 
@@ -94,7 +95,7 @@ public class AdsController {
     public ResponseEntity<AdsDto> updateAdsImage(
             @PathVariable("id") @Valid Long id,
             @RequestPart("image") @Valid @NotNull MultipartFile file
-    ) {
+    ) throws AccessDeniedException {
         return ResponseEntity.ok(adsImageService.update(id, file));
     }
 
@@ -113,7 +114,7 @@ public class AdsController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Void> removeAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
-    ) {
+    ) throws AccessDeniedException {
         adsService.delete(id);
 
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -136,7 +137,7 @@ public class AdsController {
     @PreAuthorize("permitAll")
     public ResponseEntity<AdsFullDto> getAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
-    ) {
+    ) throws AccessDeniedException {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.getOne(id));
     }
 
@@ -219,7 +220,7 @@ public class AdsController {
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id,
             @ApiParam(value = "comment", required = true) @Valid @RequestBody AdsCommentDto adsCommentDto
-    ) {
+    ) throws AccessDeniedException {
         return ResponseEntity.status(HttpStatus.OK).body(adsCommentService.update(adPk, id, adsCommentDto));
     }
 
@@ -239,7 +240,7 @@ public class AdsController {
     public ResponseEntity<Void> deleteAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
-    ) {
+    ) throws AccessDeniedException {
         adsCommentService.delete(adPk, id);
 
         return ResponseEntity.status(HttpStatus.OK).build();

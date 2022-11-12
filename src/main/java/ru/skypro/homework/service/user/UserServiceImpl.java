@@ -3,16 +3,17 @@ package ru.skypro.homework.service.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.component.AuthenticationFacade;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.component.authenticationFacade.AuthenticationFacade;
 import ru.skypro.homework.dto.UserCreateDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.dto.UserNewPasswordDto;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.type.RoleType;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,11 +38,11 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.INSTANCE.userCreateDtoToUser(userCreateDto);
 
         if (userRepository.findByEmailEqualsIgnoreCase(user.getEmail()).isPresent()) {
-            return false;
+            throw new ValidationException("Такой пользователь уже зарегистрирован");
         }
 
         if (user.getRole() == null) {
-            user.setRole(Role.USER);
+            user.setRole(RoleType.USER);
         }
 
         user.setPassword(encoder.encode(userCreateDto.getPassword()));
@@ -53,15 +54,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto userDto) {
-        if (null == userDto.getId()) {
-            Long userId = authenticationFacade.getUserId();
+        Long userId = authenticationFacade.getUserId();
 
-            if (null == userId) {
-                throw new RuntimeException("Ошибка определения пользователя");
-            }
-
-            userDto.setId(userId.intValue());
+        if (null == userId) {
+            throw new RuntimeException("Ошибка определения пользователя");
         }
+
+        userDto.setId(userId.intValue());
 
         User user = userRepository.findById(userDto.getId().longValue())
                 .orElseThrow(() -> new EntityNotFoundException("id: " + userDto.getId()));

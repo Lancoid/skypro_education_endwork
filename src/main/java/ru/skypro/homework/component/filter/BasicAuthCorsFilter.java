@@ -1,4 +1,4 @@
-package ru.skypro.homework.component;
+package ru.skypro.homework.component.filter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;

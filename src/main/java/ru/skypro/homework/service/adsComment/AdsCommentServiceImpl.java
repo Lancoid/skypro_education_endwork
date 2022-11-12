@@ -1,7 +1,7 @@
 package ru.skypro.homework.service.adsComment;
 
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.component.AuthenticationFacade;
+import ru.skypro.homework.component.authenticationFacade.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCommentDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsCommentDto;
 import ru.skypro.homework.mapper.AdsCommentMapper;
@@ -13,6 +13,7 @@ import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -59,9 +60,11 @@ public class AdsCommentServiceImpl implements AdsCommentService {
     }
 
     @Override
-    public AdsCommentDto update(String adPk, Integer id, AdsCommentDto adsCommentDto) {
+    public AdsCommentDto update(String adPk, Integer id, AdsCommentDto adsCommentDto) throws AccessDeniedException {
         AdsComment adsComment = adsCommentRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + id));
+
+        authenticationFacade.isAdminOrOwner(adsComment.getUser().getId());
 
         adsComment.setText(adsCommentDto.getText());
 
@@ -71,9 +74,11 @@ public class AdsCommentServiceImpl implements AdsCommentService {
     }
 
     @Override
-    public void delete(String adPk, Integer id) {
+    public void delete(String adPk, Integer id) throws AccessDeniedException {
         AdsComment adsComment = adsCommentRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + id));
+
+        authenticationFacade.isAdminOrOwner(adsComment.getUser().getId());
 
         adsCommentRepository.delete(adsComment);
     }

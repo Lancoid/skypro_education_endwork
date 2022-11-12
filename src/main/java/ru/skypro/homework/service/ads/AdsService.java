@@ -7,16 +7,17 @@ import ru.skypro.homework.dto.AdsFullDto;
 import ru.skypro.homework.dto.ResponseWrapperAdsDto;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 public interface AdsService {
 
     AdsDto create(AdsCreateDto adsCreateDto, MultipartFile file) throws IOException;
 
-    AdsDto update(Integer id, AdsDto adsDto);
+    AdsDto update(Integer id, AdsDto adsDto) throws AccessDeniedException;
 
-    void delete(Integer id);
+    void delete(Integer id) throws AccessDeniedException;
 
-    AdsFullDto getOne(Integer id);
+    AdsFullDto getOne(Integer id) throws AccessDeniedException;
 
     ResponseWrapperAdsDto getAll();
 

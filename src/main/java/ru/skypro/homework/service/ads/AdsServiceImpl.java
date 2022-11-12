@@ -3,7 +3,7 @@ package ru.skypro.homework.service.ads;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.component.AuthenticationFacade;
+import ru.skypro.homework.component.authenticationFacade.AuthenticationFacade;
 import ru.skypro.homework.dto.AdsCreateDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.AdsFullDto;
@@ -19,6 +19,7 @@ import ru.skypro.homework.service.adsImage.AdsImageService;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -71,9 +72,11 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     @Transactional
-    public AdsDto update(Integer id, AdsDto adsDto) {
+    public AdsDto update(Integer id, AdsDto adsDto) throws AccessDeniedException {
         Ads createdAds = adsRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + id));
+
+        authenticationFacade.isAdminOrOwner(createdAds.getUser().getId());
 
         Ads ads = AdsMapper.INSTANCE.adsDtoToAds(adsDto);
         ads.setId(Long.valueOf(id));
@@ -87,9 +90,11 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer id) throws AccessDeniedException {
         Ads ads = adsRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new EntityNotFoundException("id: " + id));
+
+        authenticationFacade.isAdminOrOwner(ads.getUser().getId());
 
         adsRepository.deleteById(Long.valueOf(id));
     }
