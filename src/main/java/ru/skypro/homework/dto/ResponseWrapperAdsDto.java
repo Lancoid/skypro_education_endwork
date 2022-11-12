@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class ResponseWrapperAdsDto {
 
-    private Integer count = 0;
+    private int count = 0;
     private List<AdsDto> results = new ArrayList<>();
 
     public void setOneDto(@NotNull AdsDto adsDto) {

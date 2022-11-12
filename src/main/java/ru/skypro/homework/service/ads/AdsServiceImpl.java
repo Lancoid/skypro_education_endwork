@@ -96,8 +96,6 @@ public class AdsServiceImpl implements AdsService {
 
         authenticationFacade.isAdminOrOwner(ads.getUser().getId());
 
-        adsCommentRepository.deleteByAdsEquals(ads);
-        adsImageRepository.deleteByAdsEquals(ads);
         adsRepository.deleteById(Long.valueOf(id));
     }
 
