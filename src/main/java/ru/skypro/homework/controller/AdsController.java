@@ -30,7 +30,6 @@ import java.util.List;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 @Api(tags = {"Объявления"})
-@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class AdsController {
 
     private final AdsService adsService;
@@ -51,6 +50,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<AdsDto> addAds(
             @RequestPart("properties") @Valid AdsCreateDto adsCreateDto,
             @RequestPart("image") @Valid @NotNull MultipartFile file
@@ -76,6 +76,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     @PatchMapping(path = "{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<AdsDto> updateAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id,
             @ApiParam(value = "ads", required = true) @Valid @RequestBody AdsDto adsDto
@@ -89,6 +90,7 @@ public class AdsController {
             notes = "Редактирование изображения объявления"
     )
     @PatchMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<AdsDto> updateAdsImage(
             @PathVariable("id") @Valid Long id,
             @RequestPart("image") @Valid @NotNull MultipartFile file
@@ -108,6 +110,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     @DeleteMapping(path = "{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Void> removeAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
     ) {
@@ -130,6 +133,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "{id}")
+    @PreAuthorize("permitAll")
     public ResponseEntity<AdsFullDto> getAds(
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
     ) {
@@ -169,6 +173,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "me")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<AdsDto>> getAdsMe() {
         return ResponseEntity.status(HttpStatus.OK).body(adsService.getAllMine().getResults());
     }
@@ -187,6 +192,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @PostMapping(path = "{ad_pk}/comments")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<AdsCommentDto> addAdsComments(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "comment", required = true) @Valid @RequestBody AdsCommentDto adsCommentDto
@@ -208,6 +214,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     @PatchMapping(path = "{ad_pk}/comments/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<AdsCommentDto> updateAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id,
@@ -228,6 +235,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     @DeleteMapping(path = "{ad_pk}/comments/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Void> deleteAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
@@ -251,6 +259,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "{ad_pk}/comments/{id}")
+    @PreAuthorize("permitAll")
     public ResponseEntity<AdsCommentDto> getAdsComment(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk,
             @ApiParam(value = "id", required = true) @PathVariable("id") Integer id
@@ -272,6 +281,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
     @GetMapping(path = "{ad_pk}/comments")
+    @PreAuthorize("permitAll")
     public ResponseEntity<ResponseWrapperAdsCommentDto> getAdsComments(
             @ApiParam(value = "ad_pk", required = true) @PathVariable("ad_pk") String adPk
     ) {
