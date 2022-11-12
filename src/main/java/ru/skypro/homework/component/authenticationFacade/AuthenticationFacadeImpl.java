@@ -48,11 +48,7 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     public void isAdminOrOwner(Long ownerId) throws AccessDeniedException {
         CustomUserDetails userDetails = getPrincipal();
 
-        if (null == userDetails) {
-            throw new AccessDeniedException("Доступ закрыт");
-        }
-
-        if (!userDetails.getAuthorities().contains(RoleType.ADMIN) && !Objects.equals(ownerId, userDetails.getId())) {
+        if (null != userDetails && !userDetails.getAuthorities().contains(RoleType.ADMIN) && !Objects.equals(ownerId, userDetails.getId())) {
             throw new AccessDeniedException("Доступ закрыт");
         }
     }
